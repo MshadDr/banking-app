@@ -10,7 +10,7 @@ import (
 )
 
 // function for generate a jwt token for @user
-func prepareToken ( user *interfaces.User ) string {
+func prepareToken( user *interfaces.User ) string {
 	
 	tokenContent := jwt.MapClaims{
 		"user_id": user.ID,
@@ -24,7 +24,7 @@ func prepareToken ( user *interfaces.User ) string {
 }
 
 // function for Setup @response
-func prepareResponse ( user *interfaces.User, accounts []interfaces.ResponseAccount, withToken bool ) map[string]interface{} {
+func prepareResponse( user *interfaces.User, accounts []interfaces.ResponseAccount, withToken bool ) map[string]interface{} {
 
 	responseUser := &interfaces.ResponseUser{
 		ID: user.ID,
@@ -62,7 +62,7 @@ func Login( username string, password string ) map[string]interface{} {
 }
 
 // func for Register new user by @username && @email && @password
-func Register ( username string, password string, email string ) map[string]interface{} {
+func Register( username string, password string, email string ) map[string]interface{} {
 
 		valid := helpers.Validation(
 			[]interfaces.Validation{
@@ -78,7 +78,7 @@ func Register ( username string, password string, email string ) map[string]inte
 }
 
 // after validation go to login...
-func successValidation ( username string, password string ) map[string]interface{} {
+func successValidation( username string, password string ) map[string]interface{} {
 
 	user := &interfaces.User{}
 	if database.DB.Where( "username = ?", username).First(&user).RecordNotFound() {
@@ -102,7 +102,7 @@ func successValidation ( username string, password string ) map[string]interface
 }
 
 // create a new user process...
-func createUser ( username string, password string, email string ) map[string]interface{} {
+func createUser( username string, password string, email string ) map[string]interface{} {
 
 	generatedPassword := helpers.HashAndSalt( []byte(password) )
 
@@ -119,7 +119,7 @@ func createUser ( username string, password string, email string ) map[string]in
 	return response;
 }
 
-func GetUser ( id string, jwt string) map[string]interface{} {
+func GetUser( id string, jwt string) map[string]interface{} {
 	isValid := helpers.ValidateToken( id, jwt )
 
 	if isValid {

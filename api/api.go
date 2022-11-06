@@ -147,13 +147,8 @@ func  StartApi() {
 	/* end of members routes */
 	
 	router.Handle( "/transaction", middlewares.CheckUserId( transaction ) ).Methods( "POST" )
-	/* end of members routes */
-
-	/* Admin Routes */
-
 	router.Handle("/user/{id}", middlewares.CheckMember( GetUser ) ).Methods("GET")
 	router.Handle("/transaction/{userId}", middlewares.CheckMember( GetMyTransactions )).Methods("GET")
-	/* end admin routes */
 
 	fmt.Println("App is working on port 8080")
 	const addr = "0.0.0.0:8088"
