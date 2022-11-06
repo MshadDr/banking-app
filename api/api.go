@@ -3,15 +3,15 @@ package api
 import (
 	"banking_app/helpers"
 	"banking_app/interfaces"
-	"banking_app/transactions"
-	"banking_app/useraccounts"
-	"banking_app/users"
+	"banking_app/middlewares"
+	"banking_app/controllers/transactions"
+	"banking_app/controllers/useraccounts"
+	"banking_app/controllers/users"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
-
 	"github.com/gorilla/mux"
 )
 
@@ -97,7 +97,7 @@ func register( w http.ResponseWriter, r *http.Request ) {
 }
 
 //
-func getUser( w http.ResponseWriter, r *http.Request ) {
+func GetUser( w http.ResponseWriter, r *http.Request ) {
 	vars := mux.Vars( r )
 	userId := vars[ "id" ]
 	authToken := r.Header.Get( "Authorization" )
@@ -130,15 +130,31 @@ func transaction( w http.ResponseWriter, r *http.Request ) {
 	apiResponse( transaction, w )
 }
 
-//
+// start router
 func  StartApi() {
 	router := mux.NewRouter()
 	router.Use( helpers.PanicHandler )
+
+	/* general routes */
 	router.HandleFunc("/login", login).Methods("POST")
 	router.HandleFunc("/register", register).Methods("POST")
-	router.HandleFunc("/transaction", transaction).Methods("POST")
-	router.HandleFunc("/user/{id}", getUser).Methods("GET")
-	router.HandleFunc("/transaction/{userId}", GetMyTransactions).Methods("GET")
+	/* end of general routes */
+
+	/* members routes */
+	// authenticatedRouter := router.PathPrefix( "/member" ).Subrouter()
+	// authenticatedRouter.Use( middlewares.CheckMember )
+	// authenticatedRouter.HandleFunc("/transaction", transaction).Methods("POST")
+	/* end of members routes */
+	
+	router.Handle( "/transaction", middlewares.CheckUserId( transaction ) ).Methods( "POST" )
+	/* end of members routes */
+
+	/* Admin Routes */
+
+	router.Handle("/user/{id}", middlewares.CheckMember( GetUser ) ).Methods("GET")
+	router.Handle("/transaction/{userId}", middlewares.CheckMember( GetMyTransactions )).Methods("GET")
+	/* end admin routes */
+
 	fmt.Println("App is working on port 8080")
 	const addr = "0.0.0.0:8088"
 	server := http.Server{
