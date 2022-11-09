@@ -1,0 +1,5 @@
+FROM nginx:alpine
+
+WORKDIR /app
+
+ENV TZ Asia/Tehran
