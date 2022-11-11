@@ -81,7 +81,7 @@ func Register( username string, password string, email string ) map[string]inter
 func successValidation( username string, password string ) map[string]interface{} {
 
 	user := &interfaces.User{}
-	if database.DB.Where( "username = ?", username).First(&user).RecordNotFound() {
+	if err := database.DB.Where( "username = ?", username).First(&user).Error; err != nil {
 		return map[string]interface{}{"message": "User not found..."}
 	}
 
@@ -125,7 +125,7 @@ func GetUser( id string, jwt string) map[string]interface{} {
 	if isValid {
 
 		user := &interfaces.User{}
-		if database.DB.Where( "id = ?", id).First(&user).RecordNotFound() {
+		if err := database.DB.Where( "id = ?", id).First(&user).Error; err != nil {
 			return map[string]interface{}{"message": "User not found..."}
 		}
 

@@ -1,4 +1,4 @@
-FROM nginx:alpine
+FROM registry.alo-dev.com/dockerhub/openresty/openresty:alpine
 
 WORKDIR /app
 

@@ -15,8 +15,9 @@ COPY . .
 
 RUN go build -o /banking_app
 
-EXPOSE 8088
+EXPOSE 8001
 
 # CMD [ "sleep", "1000000000000000" ]
 # CMD [ "go", "run", "main.go" ]
-CMD [ "/banking_app" ]
+# CMD [ "/banking_app" ]
+ENTRYPOINT /banking_app --port 8001

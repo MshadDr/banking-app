@@ -28,7 +28,7 @@ func updateAccount( id uint, amount int ) interfaces.ResponseAccount {
 // get an account
 func getAccount ( id uint ) *interfaces.Account {
 	account := &interfaces.Account{}
-	if database.DB.Where( "id = ? ", id ).First( &account ).RecordNotFound() {
+	if err := database.DB.Where( "id = ? ", id ).First( &account ).Error; err != nil {
 		return nil
 	}
 
