@@ -56,6 +56,11 @@ func apiResponse( call map[string]interface{}, w http.ResponseWriter ) {
 	}
 }
 
+// home handler
+func home( w http.ResponseWriter, r *http.Request ) {
+	apiResponse( map[string]interface{}{"message ": "welcome to our very new app"}, w )
+}
+
 // LoginController
 func login( w http.ResponseWriter, r *http.Request ) {
 	//Ready body...
@@ -136,6 +141,7 @@ func  StartApi() {
 	router.Use( helpers.PanicHandler )
 
 	/* general routes */
+	router.HandleFunc("/", home).Methods("GET")
 	router.HandleFunc("/login", login).Methods("POST")
 	router.HandleFunc("/register", register).Methods("POST")
 	/* end of general routes */

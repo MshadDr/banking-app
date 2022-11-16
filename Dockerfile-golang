@@ -15,7 +15,7 @@ COPY . .
 
 RUN go build -o /banking_app
 
-EXPOSE 8001
+# EXPOSE 8001
 
 # CMD [ "sleep", "1000000000000000" ]
 # CMD [ "go", "run", "main.go" ]

@@ -9,19 +9,16 @@ services:
     working_dir: /app
     volumes:
       - ./:/app
-    # ports:
-    #   - "8001"
-  banking_app_service:
-    build:
-      context: .
-      dockerfile: Dockerfile-nginx
-    container_name: banking_app_service
-    working_dir: /app
+
+  postgres:
+    container_name: postgres
+    image: registry.alo-dev.com/dockerhub/library/postgres
     ports:
-      - "8088:80"
+      - "5432:5432"
     volumes:
-      - ./:/app
-      - ./docker/nginx/server.conf:/etc/nginx/conf.d/default.conf
+      - ./postgres_data:/var/lib/postgres
+    environment:
+      - POSTGRES_PASSWORD=root
 networks:
   default:
     external:
